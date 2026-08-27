@@ -1,0 +1,131 @@
+import type { ReactNode } from "react";
+
+export const CLIP_STEPS = [
+  { slug: "source", label: "Source" },
+  { slug: "find-moments", label: "Find moments" },
+  { slug: "generate", label: "Generate" },
+] as const;
+
+export type ClipStepSlug = (typeof CLIP_STEPS)[number]["slug"];
+export type ClipSourceKind = "url" | "file";
+
+export function clipStepIndex(slug?: string): number {
+  const index = CLIP_STEPS.findIndex((step) => step.slug === slug);
+  return index < 0 ? 0 : index;
+}
+
+export interface ClipDraft {
+  url: string;
+  hasFile: boolean;
+  clips: number;
+  minLength: number;
+  maxLength: number;
+  formats: string;
+  whisper: string;
+  minInterest: number;
+  captions: boolean;
+  provider: string;
+}
+
+export interface ClipDefaults {
+  count?: number;
+  min_length?: number;
+  max_length?: number;
+  formats?: string[];
+  quality?: string;
+  captions?: boolean;
+}
+
+export interface ClipLimits {
+  maxClips: number;
+  minLengthSeconds: number;
+  maxLengthSeconds: number;
+  whisperModel: string;
+  minInterest: number;
+}
+
+export interface ClipSelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export interface ClipCreateCopy {
+  sourceTitle: string;
+  sourceDescription: string;
+  urlSource: string;
+  fileSource: string;
+  urlLabel: string;
+  urlPlaceholder: string;
+  fileLabel: string;
+  momentsTitle: string;
+  momentsDescription: string;
+  reviewTitle: string;
+  reviewDescription: string;
+  submit: string;
+  submitting: string;
+}
+
+export interface ClipCreateClassNames {
+  root?: string;
+  card?: string;
+  stepper?: string;
+  form?: string;
+  section?: string;
+  fields?: string;
+  navigation?: string;
+  summary?: string;
+}
+
+export interface ClipCreateSlots {
+  source?: ReactNode;
+  moments?: ReactNode;
+  review?: ReactNode;
+  summary?: ReactNode;
+  estimate?: ReactNode;
+  before?: ReactNode;
+  after?: ReactNode;
+}
+
+export interface ClipFormRenderProps {
+  children: ReactNode;
+  className: string;
+}
+
+export const DEFAULT_CLIP_COPY: ClipCreateCopy = {
+  sourceTitle: "Bring a video",
+  sourceDescription: "Paste a video URL or upload a file.",
+  urlSource: "Video URL",
+  fileSource: "Upload file",
+  urlLabel: "Video URL",
+  urlPlaceholder: "https://www.youtube.com/watch?v=...",
+  fileLabel: "Video file",
+  momentsTitle: "Find moments with AI",
+  momentsDescription: "Choose discovery bounds. Fine-tune each clip later.",
+  reviewTitle: "Review and find moments",
+  reviewDescription: "Transcribe and score source first. Render selected clips afterwards.",
+  submit: "Find moments",
+  submitting: "Starting...",
+};
+
+export const DEFAULT_CLIP_FORMATS: ClipSelectOption[] = [
+  { value: "9:16", label: "9:16 (Shorts)" },
+  { value: "16:9", label: "16:9 (Landscape)" },
+  { value: "9:16,16:9", label: "9:16 + 16:9" },
+  { value: "1:1", label: "1:1 (Square)" },
+];
+
+export const DEFAULT_CLIP_PROVIDERS: ClipSelectOption[] = [
+  { value: "openrouter", label: "OpenRouter" },
+  { value: "groq", label: "Groq" },
+  { value: "deepseek", label: "DeepSeek" },
+  { value: "openai", label: "OpenAI" },
+  { value: "gemini", label: "Gemini" },
+];
+
+export const DEFAULT_CLIP_TRANSCRIPTS: ClipSelectOption[] = [
+  { value: "auto", label: "Auto (source captions, else Whisper)" },
+  { value: "whisper", label: "Force Whisper" },
+];
+
+export const DEFAULT_WHISPER_MODELS = ["tiny", "base", "small", "medium", "large"];
