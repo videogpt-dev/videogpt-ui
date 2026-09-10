@@ -29,7 +29,7 @@ export function JobProgress({ status, progress = 0, stage, detail, className }: 
     <div
       data-slot="vui-job-progress"
       data-status={status}
-      className={cn("grid gap-3 rounded-xl border bg-card p-4", className)}
+      className={cn("flex flex-col gap-3 rounded-xl border bg-card p-4", className)}
     >
       <div className="flex items-center gap-3">
         <Icon

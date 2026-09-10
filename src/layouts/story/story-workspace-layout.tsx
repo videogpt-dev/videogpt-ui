@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StoryStepper } from "@/components/story/stepper";
 import {
@@ -27,6 +29,8 @@ export interface StoryWorkspaceLayoutProps {
   aside?: ReactNode;
   header?: ReactNode;
   footer?: ReactNode;
+  /** Render a Back / Continue bar under the step body that walks the steps in order. */
+  stepNav?: boolean;
   className?: string;
   contentClassName?: string;
 }
@@ -42,9 +46,13 @@ export function StoryWorkspaceLayout({
   aside,
   header,
   footer,
+  stepNav,
   className,
   contentClassName,
 }: StoryWorkspaceLayoutProps) {
+  const activeIndex = steps.findIndex((step) => status(step.kind) === "active");
+  const prevStep = activeIndex > 0 ? steps[activeIndex - 1] : undefined;
+  const nextStep = activeIndex >= 0 ? steps[activeIndex + 1] : undefined;
   return (
     <div
       data-slot="story-workspace-layout"
@@ -68,6 +76,20 @@ export function StoryWorkspaceLayout({
               </div>
             ) : null}
             {children}
+            {stepNav && (prevStep || nextStep) ? (
+              <div className="flex items-center justify-between gap-2 border-t pt-4">
+                {prevStep ? (
+                  <Button variant="ghost" size="sm" onClick={() => onStepChange(prevStep.kind)}>
+                    <ArrowLeft /> {prevStep.label}
+                  </Button>
+                ) : <span />}
+                {nextStep ? (
+                  <Button variant="outline" size="sm" onClick={() => onStepChange(nextStep.kind)}>
+                    Continue to {nextStep.label} <ArrowRight />
+                  </Button>
+                ) : <span />}
+              </div>
+            ) : null}
             {footer}
           </CardContent>
         </Card>
