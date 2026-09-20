@@ -61,6 +61,7 @@ export interface StoryDraft {
   engine: StoryEngine;
   agentId: string;
   mature: boolean;
+  enhance: boolean;
 }
 
 export interface StorySelectOption {
@@ -83,6 +84,7 @@ export interface StoryCreateCopy {
   genreLabel: string;
   genrePlaceholder: string;
   matureLabel: string;
+  enhanceLabel: string;
   agentLabel: string;
   submit: string;
   submitting: string;
@@ -127,6 +129,7 @@ export const DEFAULT_STORY_COPY: StoryCreateCopy = {
   genreLabel: "Genre (optional)",
   genrePlaceholder: "Thriller, documentary...",
   matureLabel: "Mature audience",
+  enhanceLabel: "Enhance prompts before generating",
   agentLabel: "Screenwriter",
   submit: "Write story",
   submitting: "Writing...",

@@ -211,6 +211,16 @@ export function StoryBriefFields({
         {copy.matureLabel}
         {draft.mature ? <input type="hidden" name="mature" value="on" /> : null}
       </label>
+
+      <label className="flex items-center gap-3 text-sm" htmlFor="story-enhance">
+        <Switch
+          id="story-enhance"
+          checked={draft.enhance}
+          onCheckedChange={(enhance) => onChange({ enhance })}
+        />
+        {copy.enhanceLabel}
+        {draft.enhance ? <input type="hidden" name="enhance" value="on" /> : null}
+      </label>
     </div>
   );
 }
