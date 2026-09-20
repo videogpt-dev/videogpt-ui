@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Check } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -72,37 +71,6 @@ export function SegmentWorkspace({
         )}
       >
         <div className="min-w-0">{children}</div>
-        {inspector ??
-          (segment.features.length > 0 ? (
-            <aside className="h-fit rounded-xl border bg-card p-4 xl:sticky xl:top-20">
-              <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                Included features
-              </div>
-              <ul className="mt-3 grid gap-3">
-                {segment.features.map((feature) => {
-                  const FeatureIcon = resolveIcon(feature.icon, icons);
-                  return (
-                    <li key={feature.code_name} className="flex items-start gap-2.5">
-                      <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-vui-brand/10 text-vui-brand">
-                        <FeatureIcon className="size-3.5" aria-hidden="true" />
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-sm font-medium">{feature.name}</span>
-                        {feature.description ? (
-                          <span className="block text-xs leading-relaxed text-muted-foreground">
-                            {feature.description}
-                          </span>
-                        ) : null}
-                      </span>
-                      {feature.status === "available" ? (
-                        <Check className="mt-1 ml-auto size-3.5 shrink-0 text-vui-success" />
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
-            </aside>
-          ) : null)}
       </div>
     </section>
   );
