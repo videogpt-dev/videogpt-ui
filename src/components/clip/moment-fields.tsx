@@ -55,7 +55,11 @@ export interface ClipMomentFieldsProps {
   whisper: string;
   minInterest: number;
   formatOptions: ClipSelectOption[];
+  finderOptions: ClipSelectOption[];
   providerOptions: ClipSelectOption[];
+  momentFinder: string;
+  momentProvider: string;
+  momentModel: string;
   transcriptOptions: ClipSelectOption[];
   whisperModels: string[];
   onWhisperChange: (value: string) => void;
@@ -70,7 +74,11 @@ export function ClipMomentFields({
   whisper,
   minInterest,
   formatOptions,
+  finderOptions,
   providerOptions,
+  momentFinder,
+  momentProvider,
+  momentModel,
   transcriptOptions,
   whisperModels,
   onWhisperChange,
@@ -137,11 +145,27 @@ export function ClipMomentFields({
           ]}
         />
         <SelectField
+          label="Moment finder"
+          name="moment_finder"
+          defaultValue={momentFinder || finderOptions[0]?.value || "offline"}
+          options={finderOptions}
+        />
+        <SelectField
           label="AI provider"
-          name="ai"
-          defaultValue={providerOptions[0]?.value ?? "openrouter"}
+          name="moment_provider"
+          defaultValue={momentProvider || providerOptions[0]?.value || ""}
           options={providerOptions}
         />
+        <Field>
+          <FieldLabel htmlFor="clip-moment-model">AI model</FieldLabel>
+          <Input
+            id="clip-moment-model"
+            name="moment_model"
+            defaultValue={momentModel}
+            placeholder="e.g. deepseek/deepseek-chat"
+          />
+          <FieldDescription>The provider&apos;s own model id, used only when the finder is AI.</FieldDescription>
+        </Field>
         <SelectField
           label="Transcript"
           name="transcript_source"
