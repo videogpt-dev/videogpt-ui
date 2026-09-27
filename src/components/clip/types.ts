@@ -24,7 +24,9 @@ export interface ClipDraft {
   whisper: string;
   minInterest: number;
   captions: boolean;
-  provider: string;
+  momentFinder: string;
+  momentProvider: string;
+  momentModel: string;
 }
 
 export interface ClipDefaults {
@@ -115,12 +117,13 @@ export const DEFAULT_CLIP_FORMATS: ClipSelectOption[] = [
   { value: "1:1", label: "1:1 (Square)" },
 ];
 
+export const DEFAULT_CLIP_FINDERS: ClipSelectOption[] = [
+  { value: "offline", label: "Offline (on device)" },
+  { value: "ai", label: "AI (reads the transcript)" },
+];
+
 export const DEFAULT_CLIP_PROVIDERS: ClipSelectOption[] = [
-  { value: "openrouter", label: "OpenRouter" },
-  { value: "groq", label: "Groq" },
-  { value: "deepseek", label: "DeepSeek" },
-  { value: "openai", label: "OpenAI" },
-  { value: "gemini", label: "Gemini" },
+  { value: "", label: "No AI provider available", disabled: true },
 ];
 
 export const DEFAULT_CLIP_TRANSCRIPTS: ClipSelectOption[] = [

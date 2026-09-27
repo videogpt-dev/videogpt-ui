@@ -9,6 +9,7 @@ import { ClipSourceFields } from "@/components/clip/source-fields";
 import { ClipStepper } from "@/components/clip/stepper";
 import {
   DEFAULT_CLIP_COPY,
+  DEFAULT_CLIP_FINDERS,
   DEFAULT_CLIP_FORMATS,
   DEFAULT_CLIP_PROVIDERS,
   DEFAULT_CLIP_TRANSCRIPTS,
@@ -43,6 +44,7 @@ export interface ClipCreateLayoutProps {
   classNames?: ClipCreateClassNames;
   slots?: ClipCreateSlots;
   formatOptions?: ClipSelectOption[];
+  finderOptions?: ClipSelectOption[];
   providerOptions?: ClipSelectOption[];
   transcriptOptions?: ClipSelectOption[];
   whisperModels?: string[];
@@ -70,6 +72,7 @@ export function ClipCreateLayout({
   classNames = {},
   slots = {},
   formatOptions = DEFAULT_CLIP_FORMATS,
+  finderOptions = DEFAULT_CLIP_FINDERS,
   providerOptions = DEFAULT_CLIP_PROVIDERS,
   transcriptOptions = DEFAULT_CLIP_TRANSCRIPTS,
   whisperModels = DEFAULT_WHISPER_MODELS,
@@ -118,7 +121,11 @@ export function ClipCreateLayout({
               whisper={whisper}
               minInterest={minInterest}
               formatOptions={formatOptions}
+              finderOptions={finderOptions}
               providerOptions={providerOptions}
+              momentFinder={draft.momentFinder}
+              momentProvider={draft.momentProvider}
+              momentModel={draft.momentModel}
               transcriptOptions={transcriptOptions}
               whisperModels={whisperModels}
               onWhisperChange={onWhisperChange}
