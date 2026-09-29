@@ -118,8 +118,9 @@ export const DEFAULT_CLIP_FORMATS: ClipSelectOption[] = [
 ];
 
 export const DEFAULT_CLIP_FINDERS: ClipSelectOption[] = [
-  { value: "offline", label: "Offline (on device)" },
+  { value: "auto", label: "Auto (AI when a model is set)" },
   { value: "ai", label: "AI (reads the transcript)" },
+  { value: "offline", label: "Offline (on device)" },
 ];
 
 export const DEFAULT_CLIP_PROVIDERS: ClipSelectOption[] = [
