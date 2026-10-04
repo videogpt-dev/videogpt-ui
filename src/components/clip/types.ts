@@ -86,8 +86,6 @@ export interface ClipCreateSlots {
   summary?: ReactNode;
   estimate?: ReactNode;
   before?: ReactNode;
-  /** Sticky side panel beside the wizard card on wide screens. */
-  aside?: ReactNode;
   after?: ReactNode;
   /** Replaces the AI provider select and model input with the host's own engine picker,
    *  which must post `moment_provider` and `moment_model`. */

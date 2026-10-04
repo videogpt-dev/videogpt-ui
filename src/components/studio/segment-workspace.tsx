@@ -13,7 +13,6 @@ export interface SegmentWorkspaceProps {
   eyebrow?: ReactNode;
   actions?: ReactNode;
   navigation?: ReactNode;
-  inspector?: ReactNode;
   className?: string;
   contentClassName?: string;
 }
@@ -25,7 +24,6 @@ export function SegmentWorkspace({
   eyebrow = "Generation workspace",
   actions,
   navigation,
-  inspector,
   className,
   contentClassName,
 }: SegmentWorkspaceProps) {
@@ -63,15 +61,7 @@ export function SegmentWorkspace({
         {navigation ? <div className="relative mt-5 border-t pt-4">{navigation}</div> : null}
       </header>
 
-      <div
-        className={cn(
-          "grid min-w-0 gap-6",
-          (inspector || segment.features.length > 0) && "xl:grid-cols-[minmax(0,1fr)_17rem]",
-          contentClassName,
-        )}
-      >
-        <div className="min-w-0">{children}</div>
-      </div>
+      <div className={cn("min-w-0", contentClassName)}>{children}</div>
     </section>
   );
 }

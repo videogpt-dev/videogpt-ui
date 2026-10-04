@@ -1,5 +1,5 @@
 import { CardDescription, CardTitle } from "@/components/ui/card";
-import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -44,14 +44,15 @@ function SelectField({
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+function Section({ title, hint, children }: { title: string; hint: string; children: ReactNode }) {
   return (
-    <FieldSet className="gap-3 border-t border-border pt-5">
-      <FieldLegend variant="label" className="text-xs tracking-wide text-muted-foreground uppercase">
-        {title}
-      </FieldLegend>
-      <div className="grid gap-4 sm:grid-cols-2">{children}</div>
-    </FieldSet>
+    <section className="grid gap-4 border-t border-border pt-5 lg:grid-cols-4 lg:gap-6">
+      <div>
+        <h3 className="text-sm font-medium">{title}</h3>
+        <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:col-span-3 xl:grid-cols-3">{children}</div>
+    </section>
   );
 }
 
@@ -118,7 +119,7 @@ export function ClipMomentFields({
         <CardTitle>{copy.momentsTitle}</CardTitle>
         <CardDescription>{copy.momentsDescription}</CardDescription>
       </div>
-      <Section title="Clips">
+      <Section title="Clips" hint="How many clips and how long.">
         <Field>
           <FieldLabel htmlFor="clip-count">Count</FieldLabel>
           <Input
@@ -130,30 +131,28 @@ export function ClipMomentFields({
             max={limits.maxClips}
           />
         </Field>
-        <div className="grid grid-cols-2 gap-4">
-          <Field>
-            <FieldLabel htmlFor="clip-min-length">Min length (s)</FieldLabel>
-            <Input
-              id="clip-min-length"
-              name="min_length"
-              type="number"
-              defaultValue={defaults?.min_length ?? 20}
-              min={limits.minLengthSeconds}
-              max={limits.maxLengthSeconds}
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="clip-max-length">Max length (s)</FieldLabel>
-            <Input
-              id="clip-max-length"
-              name="max_length"
-              type="number"
-              defaultValue={defaults?.max_length ?? 60}
-              min={limits.minLengthSeconds}
-              max={limits.maxLengthSeconds}
-            />
-          </Field>
-        </div>
+        <Field>
+          <FieldLabel htmlFor="clip-min-length">Min length (s)</FieldLabel>
+          <Input
+            id="clip-min-length"
+            name="min_length"
+            type="number"
+            defaultValue={defaults?.min_length ?? 20}
+            min={limits.minLengthSeconds}
+            max={limits.maxLengthSeconds}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="clip-max-length">Max length (s)</FieldLabel>
+          <Input
+            id="clip-max-length"
+            name="max_length"
+            type="number"
+            defaultValue={defaults?.max_length ?? 60}
+            min={limits.minLengthSeconds}
+            max={limits.maxLengthSeconds}
+          />
+        </Field>
         <SliderField label="Minimum interest" value={minInterest.toFixed(2)}>
           <input type="hidden" name="min_interest" value={minInterest} />
           <Slider
@@ -166,7 +165,7 @@ export function ClipMomentFields({
           />
         </SliderField>
       </Section>
-      <Section title="Discovery">
+      <Section title="Discovery" hint="Who picks the moments.">
         <SelectField
           label="Moment finder"
           name="moment_finder"
@@ -193,7 +192,7 @@ export function ClipMomentFields({
           </>
         )}
       </Section>
-      <Section title="Transcript">
+      <Section title="Transcript" hint="Where the words come from.">
         <SelectField
           label="Source"
           name="transcript_source"
@@ -216,7 +215,7 @@ export function ClipMomentFields({
           />
         </SliderField>
       </Section>
-      <Section title="Output">
+      <Section title="Output" hint="Shape of the rendered files.">
         <SelectField
           label="Formats"
           name="formats"
@@ -233,7 +232,7 @@ export function ClipMomentFields({
             { value: "low", label: "Low" },
           ]}
         />
-        <Field orientation="horizontal" className="items-center sm:col-span-2">
+        <Field orientation="horizontal" className="items-center self-end sm:h-9">
           <Checkbox
             id="clip-captions"
             name="captions"

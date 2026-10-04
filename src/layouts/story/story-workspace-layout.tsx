@@ -25,8 +25,6 @@ export interface StoryWorkspaceLayoutProps {
   subtitle?: ReactNode;
   /** Progress bar / job status rendered under the stepper. */
   progress?: ReactNode;
-  /** Right-rail panel (spend, variants, versions). */
-  aside?: ReactNode;
   header?: ReactNode;
   footer?: ReactNode;
   /** Render a Back / Continue bar under the step body that walks the steps in order. */
@@ -43,7 +41,6 @@ export function StoryWorkspaceLayout({
   title,
   subtitle,
   progress,
-  aside,
   header,
   footer,
   stepNav,
@@ -66,34 +63,32 @@ export function StoryWorkspaceLayout({
         </CardHeader>
       </Card>
 
-      <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-[minmax(0,1fr)]")}>
-        <Card className="min-w-0 gap-0 py-0">
-          <CardContent className={cn("flex flex-col gap-4 p-4", contentClassName)}>
-            {title || subtitle ? (
-              <div>
-                {title ? <h2 className="text-lg font-semibold">{title}</h2> : null}
-                {subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}
-              </div>
-            ) : null}
-            {children}
-            {stepNav && (prevStep || nextStep) ? (
-              <div className="flex items-center justify-between gap-2 border-t pt-4">
-                {prevStep ? (
-                  <Button variant="ghost" size="sm" onClick={() => onStepChange(prevStep.kind)}>
-                    <ArrowLeft /> {prevStep.label}
-                  </Button>
-                ) : <span />}
-                {nextStep ? (
-                  <Button variant="outline" size="sm" onClick={() => onStepChange(nextStep.kind)}>
-                    Continue to {nextStep.label} <ArrowRight />
-                  </Button>
-                ) : <span />}
-              </div>
-            ) : null}
-            {footer}
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="min-w-0 gap-0 py-0">
+        <CardContent className={cn("flex flex-col gap-4 p-4", contentClassName)}>
+          {title || subtitle ? (
+            <div>
+              {title ? <h2 className="text-lg font-semibold">{title}</h2> : null}
+              {subtitle ? <p className="text-sm text-muted-foreground">{subtitle}</p> : null}
+            </div>
+          ) : null}
+          {children}
+          {stepNav && (prevStep || nextStep) ? (
+            <div className="flex items-center justify-between gap-2 border-t pt-4">
+              {prevStep ? (
+                <Button variant="ghost" size="sm" onClick={() => onStepChange(prevStep.kind)}>
+                  <ArrowLeft /> {prevStep.label}
+                </Button>
+              ) : <span />}
+              {nextStep ? (
+                <Button variant="outline" size="sm" onClick={() => onStepChange(nextStep.kind)}>
+                  Continue to {nextStep.label} <ArrowRight />
+                </Button>
+              ) : <span />}
+            </div>
+          ) : null}
+          {footer}
+        </CardContent>
+      </Card>
     </div>
   );
 }
