@@ -66,7 +66,7 @@ export function StoryWorkspaceLayout({
         </CardHeader>
       </Card>
 
-      <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-[minmax(0,1fr)_20rem]")}>
+      <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-[minmax(0,1fr)]")}>
         <Card className="min-w-0 gap-0 py-0">
           <CardContent className={cn("flex flex-col gap-4 p-4", contentClassName)}>
             {title || subtitle ? (
@@ -93,7 +93,6 @@ export function StoryWorkspaceLayout({
             {footer}
           </CardContent>
         </Card>
-        {aside ? <div className="flex min-w-0 flex-col gap-4">{aside}</div> : null}
       </div>
     </div>
   );
