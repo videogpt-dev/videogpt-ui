@@ -25,7 +25,7 @@ export function StudioShell({
     <div
       data-slot="vui-studio-shell"
       className={cn(
-        "grid min-h-svh grid-cols-1 bg-vui-canvas lg:grid-cols-[15rem_minmax(0,1fr)] has-[[data-slot=vui-inspector]]:xl:grid-cols-[15rem_minmax(0,1fr)_20rem]",
+        "grid min-h-svh grid-cols-1 bg-vui-canvas lg:grid-cols-[15rem_minmax(0,1fr)] has-data-[slot=vui-inspector]:xl:grid-cols-[15rem_minmax(0,1fr)]",
         className,
       )}
     >
@@ -41,14 +41,6 @@ export function StudioShell({
         <main className={cn("min-w-0 flex-1 p-5 md:p-8", contentClassName)}>{children}</main>
         {footer ? <footer className="border-t p-4">{footer}</footer> : null}
       </div>
-      {inspector ? (
-        <aside
-          data-slot="vui-inspector"
-          className="border-t bg-vui-panel p-5 xl:border-t-0 xl:border-l"
-        >
-          {inspector}
-        </aside>
-      ) : null}
     </div>
   );
 }

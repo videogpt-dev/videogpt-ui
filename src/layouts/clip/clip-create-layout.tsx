@@ -208,14 +208,11 @@ export function ClipCreateLayout({
     <div
       data-slot="clip-create-layout"
       className={cn(
-        "grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]",
+        "grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)]",
         classNames.root,
       )}
     >
       {card}
-      <aside data-slot="clip-create-aside" className="grid gap-4 lg:sticky lg:top-6">
-        {slots.aside}
-      </aside>
     </div>
   );
 }
