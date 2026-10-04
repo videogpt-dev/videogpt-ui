@@ -126,6 +126,7 @@ export function ClipCreateLayout({
               momentFinder={draft.momentFinder}
               momentProvider={draft.momentProvider}
               momentModel={draft.momentModel}
+              engine={slots.engine}
               transcriptOptions={transcriptOptions}
               whisperModels={whisperModels}
               onWhisperChange={onWhisperChange}
@@ -171,29 +172,50 @@ export function ClipCreateLayout({
   );
   const formClassName = cn("flex flex-col gap-6", classNames.form);
 
+  const card = (
+    <Card className={cn("gap-0 py-0", classNames.card)}>
+      <CardHeader className="border-b py-4">
+        <ClipStepper
+          current={current}
+          furthest={furthest}
+          onPick={onStepChange}
+          className={classNames.stepper}
+        />
+      </CardHeader>
+      <CardContent className="py-5">
+        {slots.before}
+        {renderForm ? (
+          renderForm({ children: content, className: formClassName })
+        ) : (
+          <form method="post" encType="multipart/form-data" className={formClassName}>
+            {content}
+          </form>
+        )}
+        {slots.after}
+      </CardContent>
+    </Card>
+  );
+
+  if (!slots.aside) {
+    return (
+      <div data-slot="clip-create-layout" className={cn("mx-auto w-full max-w-3xl", classNames.root)}>
+        {card}
+      </div>
+    );
+  }
+
   return (
-    <div data-slot="clip-create-layout" className={cn("mx-auto w-full max-w-3xl", classNames.root)}>
-      <Card className={cn("gap-0 py-0", classNames.card)}>
-        <CardHeader className="py-4">
-          <ClipStepper
-            current={current}
-            furthest={furthest}
-            onPick={onStepChange}
-            className={classNames.stepper}
-          />
-        </CardHeader>
-        <CardContent className="pb-4">
-          {slots.before}
-          {renderForm ? (
-            renderForm({ children: content, className: formClassName })
-          ) : (
-            <form method="post" encType="multipart/form-data" className={formClassName}>
-              {content}
-            </form>
-          )}
-          {slots.after}
-        </CardContent>
-      </Card>
+    <div
+      data-slot="clip-create-layout"
+      className={cn(
+        "grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]",
+        classNames.root,
+      )}
+    >
+      {card}
+      <aside data-slot="clip-create-aside" className="grid gap-4 lg:sticky lg:top-6">
+        {slots.aside}
+      </aside>
     </div>
   );
 }
