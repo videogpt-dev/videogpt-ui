@@ -6,7 +6,6 @@ export interface StudioShellProps {
   navigation?: ReactNode;
   header?: ReactNode;
   children: ReactNode;
-  inspector?: ReactNode;
   footer?: ReactNode;
   className?: string;
   contentClassName?: string;
@@ -16,7 +15,6 @@ export function StudioShell({
   navigation,
   header,
   children,
-  inspector,
   footer,
   className,
   contentClassName,
@@ -25,14 +23,14 @@ export function StudioShell({
     <div
       data-slot="vui-studio-shell"
       className={cn(
-        "grid min-h-svh grid-cols-1 bg-vui-canvas lg:grid-cols-[15rem_minmax(0,1fr)] has-data-[slot=vui-inspector]:xl:grid-cols-[15rem_minmax(0,1fr)]",
+        "flex min-h-svh flex-col bg-vui-canvas lg:flex-row",
         className,
       )}
     >
       {navigation ? (
-        <aside className="border-b bg-vui-panel p-4 lg:border-r lg:border-b-0">{navigation}</aside>
+        <aside className="border-b bg-vui-panel p-4 lg:w-60 lg:shrink-0 lg:border-r lg:border-b-0">{navigation}</aside>
       ) : null}
-      <div className="flex min-w-0 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col">
         {header ? (
           <header className="sticky top-0 z-20 border-b bg-background/85 px-5 py-3 backdrop-blur-xl">
             {header}

@@ -196,22 +196,8 @@ export function ClipCreateLayout({
     </Card>
   );
 
-  if (!slots.aside) {
-    return (
-      <div data-slot="clip-create-layout" className={cn("mx-auto w-full max-w-3xl", classNames.root)}>
-        {card}
-      </div>
-    );
-  }
-
   return (
-    <div
-      data-slot="clip-create-layout"
-      className={cn(
-        "grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)]",
-        classNames.root,
-      )}
-    >
+    <div data-slot="clip-create-layout" className={cn("w-full", classNames.root)}>
       {card}
     </div>
   );
