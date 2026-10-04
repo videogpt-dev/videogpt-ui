@@ -6,6 +6,7 @@ import type { ClipCreateCopy, ClipSourceKind } from "./types";
 
 export interface ClipSourceFieldsProps {
   source: ClipSourceKind;
+  url?: string;
   copy: ClipCreateCopy;
   onSourceChange: (source: ClipSourceKind) => void;
   className?: string;
@@ -38,6 +39,7 @@ function SourceToggle({
 
 export function ClipSourceFields({
   source,
+  url,
   copy,
   onSourceChange,
   className,
@@ -58,7 +60,13 @@ export function ClipSourceFields({
       </div>
       <Field className={cn(source !== "url" && "hidden")}>
         <FieldLabel htmlFor="clip-source-url">{copy.urlLabel}</FieldLabel>
-        <Input id="clip-source-url" name="url" type="url" placeholder={copy.urlPlaceholder} />
+        <Input
+          id="clip-source-url"
+          name="url"
+          type="url"
+          defaultValue={url}
+          placeholder={copy.urlPlaceholder}
+        />
       </Field>
       <Field className={cn(source !== "file" && "hidden")}>
         <FieldLabel htmlFor="clip-source-file">{copy.fileLabel}</FieldLabel>
