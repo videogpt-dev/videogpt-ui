@@ -88,7 +88,7 @@ export function ClipCreateLayout({
   const content = (
     <>
       <input type="hidden" name="mode" value="analyze" />
-      <fieldset disabled={submitting} className="contents">
+      <fieldset inert={submitting} aria-busy={submitting} className="contents">
         <section
           data-slot="clip-source-step"
           className={cn(sectionClassName, step !== "source" && "hidden")}
@@ -96,6 +96,7 @@ export function ClipCreateLayout({
           {slots.source ?? (
             <ClipSourceFields
               source={source}
+              url={draft.url}
               copy={copy}
               onSourceChange={onSourceChange}
               className={classNames.fields}
@@ -126,6 +127,8 @@ export function ClipCreateLayout({
               momentFinder={draft.momentFinder}
               momentProvider={draft.momentProvider}
               momentModel={draft.momentModel}
+              transcript={draft.transcript}
+              language={draft.language}
               engine={slots.engine}
               transcriptOptions={transcriptOptions}
               whisperModels={whisperModels}

@@ -85,6 +85,8 @@ export interface ClipMomentFieldsProps {
   momentFinder: string;
   momentProvider: string;
   momentModel: string;
+  transcript?: string;
+  language?: string;
   engine?: ReactNode;
   transcriptOptions: ClipSelectOption[];
   whisperModels: string[];
@@ -105,6 +107,8 @@ export function ClipMomentFields({
   momentFinder,
   momentProvider,
   momentModel,
+  transcript,
+  language,
   engine,
   transcriptOptions,
   whisperModels,
@@ -196,12 +200,17 @@ export function ClipMomentFields({
         <SelectField
           label="Source"
           name="transcript_source"
-          defaultValue={transcriptOptions[0]?.value ?? "auto"}
+          defaultValue={transcript || transcriptOptions[0]?.value || "auto"}
           options={transcriptOptions}
         />
         <Field>
           <FieldLabel htmlFor="clip-language">Language</FieldLabel>
-          <Input id="clip-language" name="language" placeholder="Auto-detect (en, it, hi...)" />
+          <Input
+            id="clip-language"
+            name="language"
+            defaultValue={language}
+            placeholder="Auto-detect (en, it, hi...)"
+          />
         </Field>
         <SliderField label="Whisper model" value={whisper}>
           <input type="hidden" name="whisper_model" value={whisper} />

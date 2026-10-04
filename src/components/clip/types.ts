@@ -27,6 +27,9 @@ export interface ClipDraft {
   momentFinder: string;
   momentProvider: string;
   momentModel: string;
+  quality?: string;
+  transcript?: string;
+  language?: string;
 }
 
 export interface ClipDefaults {
