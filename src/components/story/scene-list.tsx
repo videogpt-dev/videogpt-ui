@@ -9,9 +9,7 @@ export interface StorySceneListProps {
   showMotion?: boolean;
   readOnly?: boolean;
   onSceneChange?: (index: number, patch: Partial<StoryScene>) => void;
-  /** Per-scene generated media, resolved to elements by the consumer. */
   renderMedia?: (index: number, scene: StoryScene) => ReactNode;
-  /** Per-scene actions (regenerate, engine picker), by the consumer. */
   renderActions?: (index: number, scene: StoryScene) => ReactNode;
   empty?: ReactNode;
   className?: string;

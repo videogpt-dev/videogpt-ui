@@ -1,41 +1,31 @@
 import type { ReactNode } from "react";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { ClipMomentFields } from "@/components/clip/moment-fields";
 import { ClipNavigation } from "@/components/clip/navigation";
 import { ClipReview } from "@/components/clip/review";
 import { ClipSourceFields } from "@/components/clip/source-fields";
 import { ClipStepper } from "@/components/clip/stepper";
 import {
-  DEFAULT_CLIP_COPY,
-  DEFAULT_CLIP_FINDERS,
-  DEFAULT_CLIP_FORMATS,
-  DEFAULT_CLIP_PROVIDERS,
-  DEFAULT_CLIP_TRANSCRIPTS,
-  DEFAULT_WHISPER_MODELS,
-  clipStepIndex,
+  ClipCatalog,
+  ClipSteps,
   type ClipCreateClassNames,
   type ClipCreateCopy,
   type ClipCreateSlots,
-  type ClipDefaults,
   type ClipDraft,
-  type ClipFormRenderProps,
   type ClipLimits,
-  type ClipSelectOption,
   type ClipSourceKind,
   type ClipStepSlug,
 } from "@/components/clip/types";
+import type { FormRenderProps, SelectOption } from "@/components/forms/types";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export interface ClipCreateLayoutProps {
   step: ClipStepSlug;
   furthest: number;
   draft: ClipDraft;
   source: ClipSourceKind;
-  defaults?: ClipDefaults | null;
   limits: ClipLimits;
-  whisper: string;
-  minInterest: number;
   blocker?: string;
   error?: string | null;
   submitting?: boolean;
@@ -43,12 +33,13 @@ export interface ClipCreateLayoutProps {
   copy?: Partial<ClipCreateCopy>;
   classNames?: ClipCreateClassNames;
   slots?: ClipCreateSlots;
-  formatOptions?: ClipSelectOption[];
-  finderOptions?: ClipSelectOption[];
-  providerOptions?: ClipSelectOption[];
-  transcriptOptions?: ClipSelectOption[];
-  whisperModels?: string[];
-  renderForm?: (props: ClipFormRenderProps) => ReactNode;
+  formatOptions?: readonly SelectOption[];
+  finderOptions?: readonly SelectOption[];
+  providerOptions?: readonly SelectOption[];
+  transcriptOptions?: readonly SelectOption[];
+  qualityOptions?: readonly SelectOption[];
+  whisperModels?: readonly string[];
+  renderForm?: (props: FormRenderProps) => ReactNode;
   onStepChange: (step: ClipStepSlug) => void;
   onSourceChange: (source: ClipSourceKind) => void;
   onWhisperChange: (value: string) => void;
@@ -60,10 +51,7 @@ export function ClipCreateLayout({
   furthest,
   draft,
   source,
-  defaults,
   limits,
-  whisper,
-  minInterest,
   blocker,
   error,
   submitting,
@@ -71,20 +59,21 @@ export function ClipCreateLayout({
   copy: copyOverrides,
   classNames = {},
   slots = {},
-  formatOptions = DEFAULT_CLIP_FORMATS,
-  finderOptions = DEFAULT_CLIP_FINDERS,
-  providerOptions = DEFAULT_CLIP_PROVIDERS,
-  transcriptOptions = DEFAULT_CLIP_TRANSCRIPTS,
-  whisperModels = DEFAULT_WHISPER_MODELS,
+  formatOptions = ClipCatalog.formats,
+  finderOptions = ClipCatalog.finders,
+  providerOptions = ClipCatalog.providers,
+  transcriptOptions = ClipCatalog.transcripts,
+  qualityOptions = ClipCatalog.qualities,
+  whisperModels = ClipCatalog.whisperModels,
   renderForm,
   onStepChange,
   onSourceChange,
   onWhisperChange,
   onMinInterestChange,
 }: ClipCreateLayoutProps) {
-  const copy = { ...DEFAULT_CLIP_COPY, ...copyOverrides };
-  const current = clipStepIndex(step);
+  const copy = { ...ClipCatalog.copy, ...copyOverrides };
   const sectionClassName = cn("flex flex-col gap-4", classNames.section);
+  const formClassName = cn("flex flex-col gap-6", classNames.form);
   const content = (
     <>
       <input type="hidden" name="mode" value="analyze" />
@@ -117,21 +106,15 @@ export function ClipCreateLayout({
           {slots.moments ?? (
             <ClipMomentFields
               copy={copy}
-              defaults={defaults}
+              draft={draft}
               limits={limits}
-              whisper={whisper}
-              minInterest={minInterest}
               formatOptions={formatOptions}
               finderOptions={finderOptions}
               providerOptions={providerOptions}
-              momentFinder={draft.momentFinder}
-              momentProvider={draft.momentProvider}
-              momentModel={draft.momentModel}
-              transcript={draft.transcript}
-              language={draft.language}
-              engine={slots.engine}
               transcriptOptions={transcriptOptions}
+              qualityOptions={qualityOptions}
               whisperModels={whisperModels}
+              engine={slots.engine}
               onWhisperChange={onWhisperChange}
               onMinInterestChange={onMinInterestChange}
               className={classNames.fields}
@@ -173,35 +156,30 @@ export function ClipCreateLayout({
       </fieldset>
     </>
   );
-  const formClassName = cn("flex flex-col gap-6", classNames.form);
-
-  const card = (
-    <Card className={cn("gap-0 py-0", classNames.card)}>
-      <CardHeader className="border-b py-4">
-        <ClipStepper
-          current={current}
-          furthest={furthest}
-          onPick={onStepChange}
-          className={classNames.stepper}
-        />
-      </CardHeader>
-      <CardContent className="py-5">
-        {slots.before}
-        {renderForm ? (
-          renderForm({ children: content, className: formClassName })
-        ) : (
-          <form method="post" encType="multipart/form-data" className={formClassName}>
-            {content}
-          </form>
-        )}
-        {slots.after}
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div data-slot="clip-create-layout" className={cn("w-full", classNames.root)}>
-      {card}
+      <Card className={cn("gap-0 py-0", classNames.card)}>
+        <CardHeader className="border-b py-4">
+          <ClipStepper
+            current={ClipSteps.index(step)}
+            furthest={furthest}
+            onPick={onStepChange}
+            className={classNames.stepper}
+          />
+        </CardHeader>
+        <CardContent className="py-5">
+          {slots.before}
+          {renderForm ? (
+            renderForm({ children: content, className: formClassName })
+          ) : (
+            <form method="post" encType="multipart/form-data" className={formClassName}>
+              {content}
+            </form>
+          )}
+          {slots.after}
+        </CardContent>
+      </Card>
     </div>
   );
 }

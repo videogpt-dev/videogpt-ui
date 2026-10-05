@@ -4,15 +4,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface SeriesWorkspaceLayoutProps {
-  /** Series title/eyebrow row. */
   header?: ReactNode;
-  /** Header-side controls (rename, settings, delete). */
   headerActions?: ReactNode;
-  /** Cast editor. */
   cast?: ReactNode;
-  /** Episode list. */
   episodes?: ReactNode;
-  /** Right-rail panel, typically the showrunner. */
   aside?: ReactNode;
   footer?: ReactNode;
   className?: string;
@@ -43,8 +38,8 @@ export function SeriesWorkspaceLayout({
         </Card>
       ) : null}
 
-      <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-[minmax(0,1fr)_22rem]")}>
-        <div className="flex min-w-0 flex-col gap-4">
+      <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-3")}>
+        <div className={cn("flex min-w-0 flex-col gap-4", aside && "lg:col-span-2")}>
           {cast ? (
             <Card className="min-w-0 gap-0 py-0">
               <CardContent className="p-4">{cast}</CardContent>

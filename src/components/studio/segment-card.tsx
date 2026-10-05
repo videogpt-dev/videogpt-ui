@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-import { resolveIcon } from "./icons";
+import { Icons } from "./icons";
 import type { IconRegistry, SegmentDefinition } from "./types";
 
 const statusMeta = {
@@ -40,7 +40,6 @@ export function SegmentCard({
   onSelect,
   className,
 }: SegmentCardProps) {
-  const Icon = resolveIcon(segment.icon, icons);
   const status = statusMeta[segment.status];
   const StatusIcon = status.icon;
   const enabled = segment.status === "available";
@@ -58,7 +57,7 @@ export function SegmentCard({
       <CardHeader className="grid grid-cols-1 gap-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex size-8 items-center justify-center rounded-lg bg-vui-brand/10 text-vui-brand ring-1 ring-vui-brand/15">
-            <Icon className="size-4" aria-hidden="true" />
+            {Icons.render(segment.icon, { className: "size-4" }, icons)}
           </div>
           <Badge variant="outline" className="gap-1 border-foreground/10 bg-background/80">
             <StatusIcon data-icon="inline-start" />
@@ -74,21 +73,16 @@ export function SegmentCard({
       </CardHeader>
 
       <CardContent className="flex-1">
-        <div className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">
-          Features
-        </div>
+        <div className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">Features</div>
         <ul className="grid gap-2.5">
-          {segment.features.slice(0, featureLimit).map((feature) => {
-            const FeatureIcon = resolveIcon(feature.icon, icons);
-            return (
-              <li key={feature.code_name} className="flex items-center gap-2 text-xs">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-foreground/8 text-foreground/70">
-                  <FeatureIcon className="size-2" aria-hidden="true" />
-                </span>
-                <span className="truncate">{feature.name}</span>
-              </li>
-            );
-          })}
+          {segment.features.slice(0, featureLimit).map((feature) => (
+            <li key={feature.code_name} className="flex items-center gap-2 text-xs">
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-foreground/8 text-foreground/70">
+                {Icons.render(feature.icon, { className: "size-2" }, icons)}
+              </span>
+              <span className="truncate">{feature.name}</span>
+            </li>
+          ))}
         </ul>
       </CardContent>
 

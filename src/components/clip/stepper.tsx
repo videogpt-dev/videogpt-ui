@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { CLIP_STEPS, type ClipStepSlug } from "./types";
+import { ClipSteps, type ClipStepSlug } from "./types";
 
 export interface ClipStepperProps {
   current: number;
@@ -13,8 +13,7 @@ export interface ClipStepperProps {
 export function ClipStepper({ current, furthest, onPick, className }: ClipStepperProps) {
   return (
     <ol data-slot="clip-stepper" className={cn("flex flex-wrap gap-2", className)}>
-      {CLIP_STEPS.map((step, index) => {
-        const done = index < current;
+      {ClipSteps.all.map((step, index) => {
         const reachable = index <= furthest;
         return (
           <li key={step.slug}>
@@ -31,8 +30,8 @@ export function ClipStepper({ current, furthest, onPick, className }: ClipSteppe
                     : "cursor-not-allowed bg-foreground/6 text-foreground/40",
               )}
             >
-              <span className="grid size-5 place-items-center rounded-full bg-black/20 text-[0.6875rem]">
-                {done ? <Check size={11} /> : index + 1}
+              <span className="grid size-5 place-items-center rounded-full bg-black/20">
+                {index < current ? <Check size={11} /> : index + 1}
               </span>
               {step.label}
             </button>

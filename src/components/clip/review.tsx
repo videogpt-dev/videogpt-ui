@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { ClipCreateCopy, ClipDraft, ClipSourceKind } from "./types";
@@ -12,7 +14,7 @@ export interface ClipReviewProps {
   summaryClassName?: string;
 }
 
-export function ClipSummary({
+function ClipSummary({
   draft,
   source,
   className,
@@ -68,4 +70,3 @@ export function ClipReview({
     </div>
   );
 }
-import type { ReactNode } from "react";

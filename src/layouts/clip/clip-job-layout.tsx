@@ -51,10 +51,7 @@ export function ClipJobLayout({
   progressClassName,
 }: ClipJobLayoutProps) {
   return (
-    <div
-      data-slot="clip-job-layout"
-      className={cn("grid gap-6 lg:grid-cols-[1fr_1.2fr]", className)}
-    >
+    <div data-slot="clip-job-layout" className={cn("grid gap-6 lg:grid-cols-2", className)}>
       <Card className={cn("gap-0 py-0", progressClassName)}>
         <CardHeader className="border-b py-4">
           <CardTitle>{title}</CardTitle>

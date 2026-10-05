@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { defaultIcons, resolveIcon } from "./icons";
+import { Icons } from "./icons";
 
-describe("resolveIcon", () => {
+describe("Icons.resolve", () => {
   it("resolves API icon names", () => {
-    expect(resolveIcon("scissors")).toBe(defaultIcons.scissors);
+    expect(Icons.resolve("scissors")).toBe(Icons.defaults.scissors);
   });
 
   it("uses fallback for unknown icon names", () => {
-    expect(resolveIcon("unknown")).toBe(defaultIcons["panels-top-left"]);
+    expect(Icons.resolve("unknown")).toBe(Icons.defaults["panels-top-left"]);
   });
 });

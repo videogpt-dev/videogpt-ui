@@ -17,7 +17,6 @@ export interface SeriesLibraryLayoutProps {
   series: SeriesSummary[];
   title?: ReactNode;
   subtitle?: ReactNode;
-  /** Header-side control, typically a "Create series" button. */
   action?: ReactNode;
   emptyTitle?: string;
   emptyDescription?: string;

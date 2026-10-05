@@ -4,16 +4,13 @@ import { Clapperboard } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { SERIES_EPISODE_STATUS_META, type SeriesEpisode } from "./types";
+import { SeriesCatalog, type SeriesEpisode } from "./types";
 
 export interface SeriesEpisodeCardProps {
   episode: SeriesEpisode;
   index?: number;
-  /** Turn the stored thumbnail path into a URL. Defaults to the path unchanged. */
   resolveImage?: (path: string) => string;
-  /** Wraps the card as a link (consumer supplies an anchor/router Link). */
   renderLink?: (children: ReactNode) => ReactNode;
-  /** Trailing controls (menu, delete) supplied by the consumer. */
   actions?: ReactNode;
   className?: string;
 }
@@ -26,7 +23,7 @@ export function SeriesEpisodeCard({
   actions,
   className,
 }: SeriesEpisodeCardProps) {
-  const status = SERIES_EPISODE_STATUS_META[episode.status] ?? SERIES_EPISODE_STATUS_META.draft;
+  const status = SeriesCatalog.episodeStatus[episode.status] ?? SeriesCatalog.episodeStatus.draft;
   const body = (
     <div className="flex min-w-0 items-center gap-3">
       <span className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-md bg-muted text-muted-foreground">

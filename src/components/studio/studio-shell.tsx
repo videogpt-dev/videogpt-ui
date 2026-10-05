@@ -22,13 +22,12 @@ export function StudioShell({
   return (
     <div
       data-slot="vui-studio-shell"
-      className={cn(
-        "flex min-h-svh flex-col bg-vui-canvas lg:flex-row",
-        className,
-      )}
+      className={cn("flex min-h-svh flex-col bg-vui-canvas lg:flex-row", className)}
     >
       {navigation ? (
-        <aside className="border-b bg-vui-panel p-4 lg:w-60 lg:shrink-0 lg:border-r lg:border-b-0">{navigation}</aside>
+        <aside className="border-b bg-vui-panel p-4 lg:w-60 lg:shrink-0 lg:border-r lg:border-b-0">
+          {navigation}
+        </aside>
       ) : null}
       <div className="flex min-w-0 flex-1 flex-col">
         {header ? (

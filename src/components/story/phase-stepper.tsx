@@ -64,7 +64,7 @@ export function StoryPhaseStepper<TId extends string>({
             >
               <span
                 className={cn(
-                  "relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full border text-[0.6875rem] font-semibold",
+                  "relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full border font-semibold",
                   NODE_TONE[state],
                 )}
               >

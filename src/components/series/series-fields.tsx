@@ -1,35 +1,23 @@
 import type { ReactNode } from "react";
 
+import { SelectField } from "@/components/forms/option-select";
+import type { SelectOption } from "@/components/forms/types";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { MediaOptions, type RenderEngine } from "@/lib/media-options";
 import { cn } from "@/lib/utils";
-import {
-  DEFAULT_SERIES_ASPECTS,
-  DEFAULT_SERIES_ENGINES,
-  DEFAULT_SERIES_LANGUAGES,
-  DEFAULT_SERIES_RESOLUTIONS,
-  type SeriesCreateCopy,
-  type SeriesDraft,
-  type SeriesSelectOption,
-} from "./types";
+import { SeriesCatalog, type SeriesCreateCopy, type SeriesDraft } from "./types";
 
 export interface SeriesBriefFieldsProps {
   draft: SeriesDraft;
   copy: SeriesCreateCopy;
-  aspectOptions?: SeriesSelectOption[];
-  engineOptions?: SeriesSelectOption[];
-  languageOptions?: SeriesSelectOption[];
-  resolutionOptions?: SeriesSelectOption[];
+  aspectOptions?: readonly SelectOption[];
+  engineOptions?: readonly SelectOption[];
+  languageOptions?: readonly SelectOption[];
+  resolutionOptions?: readonly SelectOption[];
   nameAction?: ReactNode;
   premiseAction?: ReactNode;
   extraFieldsSlot?: ReactNode;
@@ -37,48 +25,13 @@ export interface SeriesBriefFieldsProps {
   className?: string;
 }
 
-function SelectField({
-  id,
-  name,
-  label,
-  value,
-  options,
-  onValueChange,
-}: {
-  id: string;
-  name: string;
-  label: string;
-  value: string;
-  options: SeriesSelectOption[];
-  onValueChange: (value: string) => void;
-}) {
-  return (
-    <Field>
-      <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger id={id} className="w-full">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <input type="hidden" name={name} value={value} />
-    </Field>
-  );
-}
-
 export function SeriesBriefFields({
   draft,
   copy,
-  aspectOptions = DEFAULT_SERIES_ASPECTS,
-  engineOptions = DEFAULT_SERIES_ENGINES,
-  languageOptions = DEFAULT_SERIES_LANGUAGES,
-  resolutionOptions = DEFAULT_SERIES_RESOLUTIONS,
+  aspectOptions = MediaOptions.aspects,
+  engineOptions = MediaOptions.engines,
+  languageOptions = MediaOptions.languages,
+  resolutionOptions = SeriesCatalog.resolutions,
   nameAction,
   premiseAction,
   extraFieldsSlot,
@@ -139,7 +92,7 @@ export function SeriesBriefFields({
           label={copy.engineLabel}
           value={draft.engine}
           options={engineOptions}
-          onValueChange={(engine) => onChange({ engine: engine as SeriesDraft["engine"] })}
+          onValueChange={(engine) => onChange({ engine: engine as RenderEngine })}
         />
 
         <SelectField

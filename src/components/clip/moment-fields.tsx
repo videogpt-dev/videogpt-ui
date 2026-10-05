@@ -1,47 +1,29 @@
+import type { ReactNode } from "react";
+
+import { SelectField } from "@/components/forms/option-select";
+import type { SelectOption } from "@/components/forms/types";
 import { CardDescription, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
-import type { ClipCreateCopy, ClipDefaults, ClipLimits, ClipSelectOption } from "./types";
+import type { ClipCreateCopy, ClipDraft, ClipLimits } from "./types";
 
-function SelectField({
-  label,
-  name,
-  defaultValue,
-  options,
-}: {
-  label: string;
-  name: string;
-  defaultValue: string;
-  options: ClipSelectOption[];
-}) {
-  return (
-    <Field>
-      <FieldLabel>{label}</FieldLabel>
-      <Select name={name} defaultValue={defaultValue}>
-        <SelectTrigger className="w-full">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </Field>
-  );
+export interface ClipMomentFieldsProps {
+  copy: ClipCreateCopy;
+  draft: ClipDraft;
+  limits: ClipLimits;
+  formatOptions: readonly SelectOption[];
+  finderOptions: readonly SelectOption[];
+  providerOptions: readonly SelectOption[];
+  transcriptOptions: readonly SelectOption[];
+  qualityOptions: readonly SelectOption[];
+  whisperModels: readonly string[];
+  engine?: ReactNode;
+  onWhisperChange: (value: string) => void;
+  onMinInterestChange: (value: number) => void;
+  className?: string;
 }
 
 function Section({ title, hint, children }: { title: string; hint: string; children: ReactNode }) {
@@ -56,7 +38,15 @@ function Section({ title, hint, children }: { title: string; hint: string; child
   );
 }
 
-function SliderField({ label, value, children }: { label: string; value: string; children: ReactNode }) {
+function SliderField({
+  label,
+  value,
+  children,
+}: {
+  label: string;
+  value: string;
+  children: ReactNode;
+}) {
   return (
     <Field>
       <div className="flex items-center justify-between gap-3">
@@ -68,55 +58,26 @@ function SliderField({ label, value, children }: { label: string; value: string;
   );
 }
 
-function formatsToOption(formats: string[] | undefined, options: ClipSelectOption[]): string {
-  const joined = (formats ?? []).join(",");
-  return options.some((option) => option.value === joined) ? joined : (options[0]?.value ?? "9:16");
-}
-
-export interface ClipMomentFieldsProps {
-  copy: ClipCreateCopy;
-  defaults?: ClipDefaults | null;
-  limits: ClipLimits;
-  whisper: string;
-  minInterest: number;
-  formatOptions: ClipSelectOption[];
-  finderOptions: ClipSelectOption[];
-  providerOptions: ClipSelectOption[];
-  momentFinder: string;
-  momentProvider: string;
-  momentModel: string;
-  transcript?: string;
-  language?: string;
-  engine?: ReactNode;
-  transcriptOptions: ClipSelectOption[];
-  whisperModels: string[];
-  onWhisperChange: (value: string) => void;
-  onMinInterestChange: (value: number) => void;
-  className?: string;
+function first(options: readonly SelectOption[], value: string): string {
+  return options.some((option) => option.value === value) ? value : (options[0]?.value ?? "");
 }
 
 export function ClipMomentFields({
   copy,
-  defaults,
+  draft,
   limits,
-  whisper,
-  minInterest,
   formatOptions,
   finderOptions,
   providerOptions,
-  momentFinder,
-  momentProvider,
-  momentModel,
-  transcript,
-  language,
-  engine,
   transcriptOptions,
+  qualityOptions,
   whisperModels,
+  engine,
   onWhisperChange,
   onMinInterestChange,
   className,
 }: ClipMomentFieldsProps) {
-  const whisperIndex = Math.max(0, whisperModels.indexOf(whisper));
+  const whisperIndex = Math.max(0, whisperModels.indexOf(draft.whisper));
   return (
     <div data-slot="clip-moment-fields" className={cn("flex flex-col gap-6", className)}>
       <div>
@@ -130,7 +91,7 @@ export function ClipMomentFields({
             id="clip-count"
             name="clips"
             type="number"
-            defaultValue={defaults?.count ?? 10}
+            defaultValue={draft.clips}
             min={1}
             max={limits.maxClips}
           />
@@ -141,7 +102,7 @@ export function ClipMomentFields({
             id="clip-min-length"
             name="min_length"
             type="number"
-            defaultValue={defaults?.min_length ?? 20}
+            defaultValue={draft.minLength}
             min={limits.minLengthSeconds}
             max={limits.maxLengthSeconds}
           />
@@ -152,36 +113,38 @@ export function ClipMomentFields({
             id="clip-max-length"
             name="max_length"
             type="number"
-            defaultValue={defaults?.max_length ?? 60}
+            defaultValue={draft.maxLength}
             min={limits.minLengthSeconds}
             max={limits.maxLengthSeconds}
           />
         </Field>
-        <SliderField label="Minimum interest" value={minInterest.toFixed(2)}>
-          <input type="hidden" name="min_interest" value={minInterest} />
+        <SliderField label="Minimum interest" value={draft.minInterest.toFixed(2)}>
+          <input type="hidden" name="min_interest" value={draft.minInterest} />
           <Slider
             aria-label="Minimum interest"
             min={0}
             max={1}
             step={0.05}
-            value={[minInterest]}
-            onValueChange={(values) => onMinInterestChange(values[0] ?? minInterest)}
+            value={[draft.minInterest]}
+            onValueChange={(values) => onMinInterestChange(values[0] ?? draft.minInterest)}
           />
         </SliderField>
       </Section>
       <Section title="Discovery" hint="Who picks the moments.">
         <SelectField
+          id="clip-moment-finder"
           label="Moment finder"
           name="moment_finder"
-          defaultValue={momentFinder || finderOptions[0]?.value || "offline"}
+          defaultValue={first(finderOptions, draft.momentFinder)}
           options={finderOptions}
         />
         {engine ?? (
           <>
             <SelectField
+              id="clip-moment-provider"
               label="AI provider"
               name="moment_provider"
-              defaultValue={momentProvider || providerOptions[0]?.value || ""}
+              defaultValue={first(providerOptions, draft.momentProvider)}
               options={providerOptions}
             />
             <Field>
@@ -189,7 +152,7 @@ export function ClipMomentFields({
               <Input
                 id="clip-moment-model"
                 name="moment_model"
-                defaultValue={momentModel}
+                defaultValue={draft.momentModel}
                 placeholder="e.g. deepseek/deepseek-chat"
               />
             </Field>
@@ -198,9 +161,10 @@ export function ClipMomentFields({
       </Section>
       <Section title="Transcript" hint="Where the words come from.">
         <SelectField
+          id="clip-transcript"
           label="Source"
           name="transcript_source"
-          defaultValue={transcript || transcriptOptions[0]?.value || "auto"}
+          defaultValue={first(transcriptOptions, draft.transcript)}
           options={transcriptOptions}
         />
         <Field>
@@ -208,45 +172,39 @@ export function ClipMomentFields({
           <Input
             id="clip-language"
             name="language"
-            defaultValue={language}
+            defaultValue={draft.language}
             placeholder="Auto-detect (en, it, hi...)"
           />
         </Field>
-        <SliderField label="Whisper model" value={whisper}>
-          <input type="hidden" name="whisper_model" value={whisper} />
+        <SliderField label="Whisper model" value={draft.whisper}>
+          <input type="hidden" name="whisper_model" value={draft.whisper} />
           <Slider
             aria-label="Whisper model"
             min={0}
             max={Math.max(0, whisperModels.length - 1)}
             step={1}
             value={[whisperIndex]}
-            onValueChange={(values) => onWhisperChange(whisperModels[values[0]] ?? whisper)}
+            onValueChange={(values) => onWhisperChange(whisperModels[values[0]] ?? draft.whisper)}
           />
         </SliderField>
       </Section>
       <Section title="Output" hint="Shape of the rendered files.">
         <SelectField
+          id="clip-formats"
           label="Formats"
           name="formats"
-          defaultValue={formatsToOption(defaults?.formats, formatOptions)}
+          defaultValue={first(formatOptions, draft.formats)}
           options={formatOptions}
         />
         <SelectField
+          id="clip-quality"
           label="Quality"
           name="quality"
-          defaultValue={defaults?.quality ?? "high"}
-          options={[
-            { value: "high", label: "High" },
-            { value: "medium", label: "Medium" },
-            { value: "low", label: "Low" },
-          ]}
+          defaultValue={first(qualityOptions, draft.quality)}
+          options={qualityOptions}
         />
         <Field orientation="horizontal" className="items-center self-end sm:h-9">
-          <Checkbox
-            id="clip-captions"
-            name="captions"
-            defaultChecked={defaults?.captions ?? true}
-          />
+          <Checkbox id="clip-captions" name="captions" defaultChecked={draft.captions} />
           <FieldLabel htmlFor="clip-captions">Generate captions</FieldLabel>
         </Field>
       </Section>

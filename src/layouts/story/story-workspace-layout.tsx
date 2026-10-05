@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StoryStepper } from "@/components/story/stepper";
 import {
-  STORY_STEPS,
+  StorySteps,
   type StoryStepKind,
   type StoryStepMeta,
   type StoryStepStatus,
@@ -13,21 +13,15 @@ import {
 import { cn } from "@/lib/utils";
 
 export interface StoryWorkspaceLayoutProps {
-  /** Status per step (done / active / busy / pending / error / locked). The step whose
-   *  status is "active" is the one whose body is rendered as `children`. */
   status: (kind: StoryStepKind) => StoryStepStatus;
   onStepChange: (kind: StoryStepKind) => void;
   steps?: readonly StoryStepMeta[];
-  /** The active step's body. */
   children: ReactNode;
-  /** Title/subtitle for the active step. */
   title?: ReactNode;
   subtitle?: ReactNode;
-  /** Progress bar / job status rendered under the stepper. */
   progress?: ReactNode;
   header?: ReactNode;
   footer?: ReactNode;
-  /** Render a Back / Continue bar under the step body that walks the steps in order. */
   stepNav?: boolean;
   className?: string;
   contentClassName?: string;
@@ -36,7 +30,7 @@ export interface StoryWorkspaceLayoutProps {
 export function StoryWorkspaceLayout({
   status,
   onStepChange,
-  steps = STORY_STEPS,
+  steps = StorySteps.all,
   children,
   title,
   subtitle,
@@ -78,12 +72,16 @@ export function StoryWorkspaceLayout({
                 <Button variant="ghost" size="sm" onClick={() => onStepChange(prevStep.kind)}>
                   <ArrowLeft /> {prevStep.label}
                 </Button>
-              ) : <span />}
+              ) : (
+                <span />
+              )}
               {nextStep ? (
                 <Button variant="outline" size="sm" onClick={() => onStepChange(nextStep.kind)}>
                   Continue to {nextStep.label} <ArrowRight />
                 </Button>
-              ) : <span />}
+              ) : (
+                <span />
+              )}
             </div>
           ) : null}
           {footer}

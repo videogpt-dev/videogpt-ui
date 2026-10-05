@@ -22,7 +22,6 @@ export interface SeriesEpisodeListProps {
   resolveImage?: (path: string) => string;
   renderLink?: (episode: SeriesEpisode, children: ReactNode) => ReactNode;
   renderActions?: (episode: SeriesEpisode) => ReactNode;
-  /** Header-side control (e.g. "New episode"). */
   action?: ReactNode;
   className?: string;
 }

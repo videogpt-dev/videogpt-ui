@@ -1,33 +1,23 @@
+import type { ReactNode } from "react";
+
+import { SelectField } from "@/components/forms/option-select";
+import type { SelectOption } from "@/components/forms/types";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { MediaOptions, type RenderEngine } from "@/lib/media-options";
 import { cn } from "@/lib/utils";
-import {
-  DEFAULT_STORY_ASPECTS,
-  DEFAULT_STORY_ENGINES,
-  DEFAULT_STORY_LANGUAGES,
-  type StoryCreateCopy,
-  type StoryDraft,
-  type StorySelectOption,
-} from "./types";
-import type { ReactNode } from "react";
+import type { StoryCreateCopy, StoryDraft } from "./types";
 
 export interface StoryBriefFieldsProps {
   draft: StoryDraft;
   copy: StoryCreateCopy;
-  aspectOptions?: StorySelectOption[];
-  engineOptions?: StorySelectOption[];
-  languageOptions?: StorySelectOption[];
-  genreOptions?: StorySelectOption[];
+  aspectOptions?: readonly SelectOption[];
+  engineOptions?: readonly SelectOption[];
+  languageOptions?: readonly SelectOption[];
+  genreOptions?: readonly SelectOption[];
   titleAction?: ReactNode;
   descriptionAction?: ReactNode;
   referenceSlot?: ReactNode;
@@ -39,47 +29,12 @@ export interface StoryBriefFieldsProps {
   className?: string;
 }
 
-function SelectField({
-  id,
-  name,
-  label,
-  value,
-  options,
-  onValueChange,
-}: {
-  id: string;
-  name: string;
-  label: string;
-  value: string;
-  options: StorySelectOption[];
-  onValueChange: (value: string) => void;
-}) {
-  return (
-    <Field>
-      <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger id={id} className="w-full">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <input type="hidden" name={name} value={value} />
-    </Field>
-  );
-}
-
 export function StoryBriefFields({
   draft,
   copy,
-  aspectOptions = DEFAULT_STORY_ASPECTS,
-  engineOptions = DEFAULT_STORY_ENGINES,
-  languageOptions = DEFAULT_STORY_LANGUAGES,
+  aspectOptions = MediaOptions.aspects,
+  engineOptions = MediaOptions.engines,
+  languageOptions = MediaOptions.languages,
   genreOptions,
   titleAction,
   descriptionAction,
@@ -174,7 +129,7 @@ export function StoryBriefFields({
           label={copy.engineLabel}
           value={draft.engine}
           options={engineOptions}
-          onValueChange={(engine) => onChange({ engine: engine as StoryDraft["engine"] })}
+          onValueChange={(engine) => onChange({ engine: engine as RenderEngine })}
         />
       </div>
 

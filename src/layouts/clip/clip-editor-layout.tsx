@@ -1,20 +1,14 @@
 import type { ReactNode } from "react";
 import { Check, Clapperboard, Save, X } from "lucide-react";
 
+import { OptionSelect } from "@/components/forms/option-select";
+import type { SelectOption } from "@/components/forms/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import type { ClipSelectOption } from "@/components/clip/types";
 
 export interface ClipEditorClassNames {
   root?: string;
@@ -36,12 +30,12 @@ export interface ClipEditorSlots {
 
 export interface ClipEditorLayoutProps {
   format: string;
-  formatOptions: ClipSelectOption[];
+  formatOptions: readonly SelectOption[];
   showCaptions: boolean;
   inSec: number;
   outSec: number;
   quality: string;
-  qualityOptions: ClipSelectOption[];
+  qualityOptions: readonly SelectOption[];
   rendering?: boolean;
   busy?: boolean;
   cannotAfford?: boolean;
@@ -93,31 +87,6 @@ const DEFAULT_COPY: ClipEditorCopy = {
   saved: "Saved",
 };
 
-function OptionSelect({
-  value,
-  options,
-  onChange,
-}: {
-  value: string;
-  options: ClipSelectOption[];
-  onChange: (value: string) => void;
-}) {
-  return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((option) => (
-          <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
-
 export function ClipEditorLayout({
   format,
   formatOptions,
@@ -154,7 +123,11 @@ export function ClipEditorLayout({
             <div className="grid gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel>{copy.aspectRatio}</FieldLabel>
-                <OptionSelect value={format} options={formatOptions} onChange={onFormatChange} />
+                <OptionSelect
+                  value={format}
+                  options={formatOptions}
+                  onValueChange={onFormatChange}
+                />
                 <FieldDescription>{copy.aspectHint}</FieldDescription>
               </Field>
               <Field orientation="horizontal" className="items-start pt-6">
@@ -210,7 +183,11 @@ export function ClipEditorLayout({
             <div className="flex flex-wrap items-end gap-3">
               <Field className="w-44">
                 <FieldLabel>{copy.quality}</FieldLabel>
-                <OptionSelect value={quality} options={qualityOptions} onChange={onQualityChange} />
+                <OptionSelect
+                  value={quality}
+                  options={qualityOptions}
+                  onValueChange={onQualityChange}
+                />
               </Field>
               <Button type="button" onClick={onRender} disabled={rendering || cannotAfford}>
                 <Clapperboard /> {copy.exportAction}

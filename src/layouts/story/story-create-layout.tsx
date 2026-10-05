@@ -1,17 +1,16 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import type { FormRenderProps, SelectOption } from "@/components/forms/types";
 import { StoryBriefFields } from "@/components/story/story-fields";
 import {
-  DEFAULT_STORY_COPY,
+  StoryCatalog,
   type StoryCreateClassNames,
   type StoryCreateCopy,
   type StoryCreateSlots,
   type StoryDraft,
-  type StoryFormRenderProps,
-  type StorySelectOption,
 } from "@/components/story/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface StoryCreateLayoutProps {
@@ -22,13 +21,13 @@ export interface StoryCreateLayoutProps {
   copy?: Partial<StoryCreateCopy>;
   classNames?: StoryCreateClassNames;
   slots?: StoryCreateSlots;
-  aspectOptions?: StorySelectOption[];
-  engineOptions?: StorySelectOption[];
-  languageOptions?: StorySelectOption[];
-  genreOptions?: StorySelectOption[];
+  aspectOptions?: readonly SelectOption[];
+  engineOptions?: readonly SelectOption[];
+  languageOptions?: readonly SelectOption[];
+  genreOptions?: readonly SelectOption[];
   minScenes?: number;
   maxScenes?: number;
-  renderForm?: (props: StoryFormRenderProps) => ReactNode;
+  renderForm?: (props: FormRenderProps) => ReactNode;
   onChange: (patch: Partial<StoryDraft>) => void;
 }
 
@@ -49,9 +48,9 @@ export function StoryCreateLayout({
   renderForm,
   onChange,
 }: StoryCreateLayoutProps) {
-  const copy = { ...DEFAULT_STORY_COPY, ...copyOverrides };
+  const copy = { ...StoryCatalog.copy, ...copyOverrides };
   const content = (
-    <fieldset disabled={submitting} className="contents">
+    <fieldset inert={submitting} aria-busy={submitting} className="contents">
       <StoryBriefFields
         draft={draft}
         copy={copy}
