@@ -15,7 +15,6 @@ export interface SeriesCastEditorProps {
   addLabel?: string;
   resolveImage?: (path: string) => string;
   renderPortrait?: (path: string, character: SeriesCharacter) => ReactNode;
-  /** App-wired portrait control per character (receives the character it belongs to). */
   renderGenerateAction?: (character: SeriesCharacter) => ReactNode;
   onChangeCharacter?: (id: string, patch: Partial<SeriesCharacter>) => void;
   onSelectPortrait?: (id: string, path: string) => void;

@@ -1,17 +1,11 @@
 import type { ReactNode } from "react";
 import { Scissors } from "lucide-react";
 
-import type { ClipSelectOption } from "@/components/clip/types";
+import { OptionSelect } from "@/components/forms/option-select";
+import type { SelectOption } from "@/components/forms/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 export interface ClipSourceEditorLayoutProps {
@@ -22,7 +16,7 @@ export interface ClipSourceEditorLayoutProps {
   endLabel: string;
   durationLabel: string;
   format: string;
-  formatOptions: ClipSelectOption[];
+  formatOptions: readonly SelectOption[];
   adding?: boolean;
   className?: string;
   controlsClassName?: string;
@@ -76,18 +70,7 @@ export function ClipSourceEditorLayout({
           </span>
           <Field className="ml-auto w-40">
             <FieldLabel>{copy.cropPreset}</FieldLabel>
-            <Select value={format} onValueChange={onFormatChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {formatOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <OptionSelect value={format} options={formatOptions} onValueChange={onFormatChange} />
           </Field>
           <p className="w-full text-xs text-muted-foreground">{copy.cropHint}</p>
         </CardContent>

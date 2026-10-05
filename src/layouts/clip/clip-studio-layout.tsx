@@ -10,13 +10,9 @@ export type ClipStudioTab = "moments" | "approved" | "clips";
 
 export interface ClipStudioMoment {
   key: string;
-  /** Short position label, e.g. "#3". */
   label: string;
-  /** "1:02 - 1:31" */
   range: string;
-  /** "29s" */
   duration: string;
-  /** 0-100, or null when the finder gave none. */
   score?: number | null;
   title: string;
   hook?: string;
@@ -30,12 +26,9 @@ export interface ClipStudioLayoutProps {
   approved: string[];
   focused: string | null;
   tab: ClipStudioTab;
-  /** The focused moment's player. */
   player: ReactNode;
-  /** Body of the Clips tab: render progress plus the rendered clips. */
   clips: ReactNode;
   clipCount: number;
-  /** Extra controls under the focused moment, e.g. a link to fine-tune it. */
   momentActions?: (moment: ClipStudioMoment) => ReactNode;
   renderLabel: string;
   renderDisabled?: boolean;
@@ -122,11 +115,6 @@ function MomentDetail({ moment, actions }: { moment: ClipStudioMoment; actions?:
   );
 }
 
-/**
- * Review found moments and render the keepers: watch each one, approve it, render the
- * approved set in one go, and see the results on the Clips tab. Presentational: the host
- * owns the player, the approved set, the render call and the rendered-clip cards.
- */
 export function ClipStudioLayout({
   moments,
   approved,

@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -75,4 +77,3 @@ export function ClipSourceFields({
     </div>
   );
 }
-import type { ReactNode } from "react";

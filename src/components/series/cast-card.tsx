@@ -12,11 +12,8 @@ import type { SeriesCharacter } from "./types";
 export interface SeriesCastCardProps {
   character: SeriesCharacter;
   readOnly?: boolean;
-  /** Turn a stored portrait path into a URL. Defaults to the path unchanged. */
   resolveImage?: (path: string) => string;
-  /** Render protected/app-owned portrait media without coupling library to its asset client. */
   renderPortrait?: (path: string, character: SeriesCharacter) => ReactNode;
-  /** App-wired portrait generation control (e.g. "Generate portrait"). */
   generateAction?: ReactNode;
   onChange?: (patch: Partial<SeriesCharacter>) => void;
   onSelectPortrait?: (path: string) => void;

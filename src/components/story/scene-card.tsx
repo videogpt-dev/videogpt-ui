@@ -10,11 +10,8 @@ import type { StoryScene } from "./types";
 export interface StorySceneCardProps {
   index: number;
   scene: StoryScene;
-  /** Show the motion toggle (Video Mode). Off for storyboard-only projects. */
   showMotion?: boolean;
-  /** Generated media preview (image/video/player) supplied by the consumer. */
   media?: ReactNode;
-  /** Per-scene actions (regenerate, engine picker) supplied by the consumer. */
   actions?: ReactNode;
   readOnly?: boolean;
   onChange?: (patch: Partial<StoryScene>) => void;

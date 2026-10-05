@@ -2,30 +2,26 @@ import type { ReactNode } from "react";
 import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { CardDescription, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { DEFAULT_SHOWRUNNER_COPY, type EpisodeIdea, type ShowrunnerCopy } from "./types";
+import { SeriesCatalog, type EpisodeIdea, type ShowrunnerCopy } from "./types";
 
 export interface SeriesShowrunnerPanelProps {
   count: number;
   ideas: EpisodeIdea[];
-  /** Selection flags parallel to `ideas`. */
   selected: boolean[];
   planning?: boolean;
   creating?: boolean;
   minCount?: number;
   maxCount?: number;
   copy?: Partial<ShowrunnerCopy>;
-  /** Control rendered beside the plan button, e.g. a writer-model picker. */
   writerSlot?: ReactNode;
   onCountChange: (count: number) => void;
   onPlan: () => void;
   onToggle: (index: number) => void;
-  /** When set, each idea's title + description become editable before creating. */
   onEditIdea?: (index: number, patch: Partial<EpisodeIdea>) => void;
   onSelectAll?: () => void;
   onClear?: () => void;
@@ -52,7 +48,7 @@ export function SeriesShowrunnerPanel({
   onCreate,
   className,
 }: SeriesShowrunnerPanelProps) {
-  const copy = { ...DEFAULT_SHOWRUNNER_COPY, ...copyOverrides };
+  const copy = { ...SeriesCatalog.showrunnerCopy, ...copyOverrides };
   const selectedCount = selected.filter(Boolean).length;
   const busy = planning || creating;
 

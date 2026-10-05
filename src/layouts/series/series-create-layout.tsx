@@ -1,17 +1,16 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import type { FormRenderProps, SelectOption } from "@/components/forms/types";
 import { SeriesBriefFields } from "@/components/series/series-fields";
 import {
-  DEFAULT_SERIES_COPY,
+  SeriesCatalog,
   type SeriesCreateClassNames,
   type SeriesCreateCopy,
   type SeriesCreateSlots,
   type SeriesDraft,
-  type SeriesFormRenderProps,
-  type SeriesSelectOption,
 } from "@/components/series/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface SeriesCreateLayoutProps {
@@ -22,11 +21,11 @@ export interface SeriesCreateLayoutProps {
   copy?: Partial<SeriesCreateCopy>;
   classNames?: SeriesCreateClassNames;
   slots?: SeriesCreateSlots;
-  aspectOptions?: SeriesSelectOption[];
-  engineOptions?: SeriesSelectOption[];
-  languageOptions?: SeriesSelectOption[];
-  resolutionOptions?: SeriesSelectOption[];
-  renderForm?: (props: SeriesFormRenderProps) => ReactNode;
+  aspectOptions?: readonly SelectOption[];
+  engineOptions?: readonly SelectOption[];
+  languageOptions?: readonly SelectOption[];
+  resolutionOptions?: readonly SelectOption[];
+  renderForm?: (props: FormRenderProps) => ReactNode;
   onChange: (patch: Partial<SeriesDraft>) => void;
 }
 
@@ -45,9 +44,9 @@ export function SeriesCreateLayout({
   renderForm,
   onChange,
 }: SeriesCreateLayoutProps) {
-  const copy = { ...DEFAULT_SERIES_COPY, ...copyOverrides };
+  const copy = { ...SeriesCatalog.copy, ...copyOverrides };
   const content = (
-    <fieldset disabled={submitting} className="contents">
+    <fieldset inert={submitting} aria-busy={submitting} className="contents">
       <SeriesBriefFields
         draft={draft}
         copy={copy}

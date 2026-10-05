@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Check, Lock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { STORY_STEPS, type StoryStepKind, type StoryStepMeta, type StoryStepStatus } from "./types";
+import { StorySteps, type StoryStepKind, type StoryStepMeta, type StoryStepStatus } from "./types";
 
 export interface StoryStepperProps {
   status: (kind: StoryStepKind) => StoryStepStatus;
@@ -23,7 +23,7 @@ const TONE: Record<StoryStepStatus, string> = {
 export function StoryStepper({
   status,
   onPick,
-  steps = STORY_STEPS,
+  steps = StorySteps.all,
   className,
 }: StoryStepperProps) {
   return (
@@ -64,13 +64,11 @@ export function StoryStepper({
                   TONE[state],
                 )}
               >
-                <span className="grid size-5 place-items-center rounded-full bg-black/20 text-[0.6875rem]">
+                <span className="grid size-5 place-items-center rounded-full bg-black/20">
                   {state === "done" ? <Check size={11} /> : locked ? <Lock size={10} /> : index + 1}
                 </span>
                 {step.label}
-                {step.optional ? (
-                  <span className="text-[0.625rem] opacity-60">optional</span>
-                ) : null}
+                {step.optional ? <span className="opacity-60">optional</span> : null}
               </button>
             </li>
           </Fragment>

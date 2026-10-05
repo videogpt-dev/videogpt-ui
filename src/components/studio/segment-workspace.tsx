@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-import { resolveIcon } from "./icons";
+import { Icons } from "./icons";
 import type { IconRegistry, SegmentDefinition } from "./types";
 
 export interface SegmentWorkspaceProps {
@@ -27,8 +27,6 @@ export function SegmentWorkspace({
   className,
   contentClassName,
 }: SegmentWorkspaceProps) {
-  const Icon = resolveIcon(segment.icon, icons);
-
   return (
     <section data-slot="vui-segment-workspace" className={cn("grid gap-6", className)}>
       <header className="relative overflow-hidden rounded-2xl border bg-card px-5 py-5 shadow-sm sm:px-6">
@@ -39,7 +37,7 @@ export function SegmentWorkspace({
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex min-w-0 items-start gap-4">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-vui-brand/10 text-vui-brand ring-1 ring-vui-brand/20">
-              <Icon className="size-5" aria-hidden="true" />
+              {Icons.render(segment.icon, { className: "size-5" }, icons)}
             </span>
             <div className="min-w-0">
               <div className="mb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">

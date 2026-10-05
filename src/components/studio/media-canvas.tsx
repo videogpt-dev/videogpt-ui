@@ -16,7 +16,7 @@ export interface MediaCanvasProps {
 }
 
 const aspectClasses = {
-  portrait: "aspect-[9/16] max-h-[70vh]",
+  portrait: "aspect-9/16 max-h-[70vh]",
   landscape: "aspect-video",
   square: "aspect-square max-h-[70vh]",
 };
