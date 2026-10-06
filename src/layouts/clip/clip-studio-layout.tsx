@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
-export type ClipStudioTab = "moments" | "approved" | "clips";
+export type ClipStudioTab = "moments" | "clips";
 
 export interface ClipStudioMoment {
   key: string;
@@ -66,7 +66,7 @@ function MomentRow({
           <span className="font-mono">{moment.range}</span>
           <span>{moment.duration}</span>
           {typeof moment.score === "number" ? <span>score {moment.score}</span> : null}
-          {moment.rendered ? <Badge variant="secondary">Rendered</Badge> : null}
+          {moment.rendered ? <Badge variant="secondary">Clipped</Badge> : null}
         </div>
         <p dir="auto" className="mt-1 line-clamp-1 text-sm">
           {moment.title}
@@ -133,7 +133,6 @@ export function ClipStudioLayout({
   onRender,
 }: ClipStudioLayoutProps) {
   const chosen = new Set(approved);
-  const visible = tab === "approved" ? moments.filter((m) => chosen.has(m.key)) : moments;
   const current = moments.find((m) => m.key === focused) ?? moments[0];
 
   const reviewing = (
@@ -143,8 +142,8 @@ export function ClipStudioLayout({
         {current ? <MomentDetail moment={current} actions={momentActions?.(current)} /> : null}
       </div>
       <div className="grid max-h-128 content-start gap-2 overflow-y-auto pr-1 lg:col-span-2">
-        {visible.length ? (
-          visible.map((moment) => (
+        {moments.length ? (
+          moments.map((moment) => (
             <MomentRow
               key={moment.key}
               moment={moment}
@@ -155,9 +154,7 @@ export function ClipStudioLayout({
             />
           ))
         ) : (
-          <p className="p-4 text-sm text-muted-foreground">
-            {tab === "approved" ? "No moments approved yet." : "No moments found."}
-          </p>
+          <p className="p-4 text-sm text-muted-foreground">No moments found.</p>
         )}
       </div>
     </div>
@@ -170,17 +167,11 @@ export function ClipStudioLayout({
           <TabsTrigger value="moments">
             Moments <Badge variant="secondary">{moments.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="approved">
-            Approved <Badge variant="secondary">{chosen.size}</Badge>
-          </TabsTrigger>
           <TabsTrigger value="clips">
             Clips <Badge variant="secondary">{clipCount}</Badge>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="moments" className="pt-3">
-          {reviewing}
-        </TabsContent>
-        <TabsContent value="approved" className="pt-3">
           {reviewing}
         </TabsContent>
         <TabsContent value="clips" className="grid gap-4 pt-3">
@@ -190,7 +181,9 @@ export function ClipStudioLayout({
 
       <div className="sticky bottom-0 z-10 flex items-center justify-between gap-3 rounded-xl border bg-background/95 p-3 backdrop-blur">
         <span className="text-sm text-muted-foreground">
-          {chosen.size} of {moments.length} approved
+          {chosen.size
+            ? `${chosen.size} of ${moments.length} approved`
+            : "Approve moments to clip them"}
         </span>
         <Button type="button" disabled={renderDisabled || chosen.size === 0} onClick={onRender}>
           <Scissors /> {renderLabel}
