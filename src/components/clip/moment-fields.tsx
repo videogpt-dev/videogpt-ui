@@ -58,6 +58,11 @@ function SliderField({
   );
 }
 
+function withValue(options: readonly SelectOption[], value: string): readonly SelectOption[] {
+  if (!value || options.some((option) => option.value === value)) return options;
+  return [...options, { value, label: value.split(",").join(" + ") }];
+}
+
 function first(options: readonly SelectOption[], value: string): string {
   return options.some((option) => option.value === value) ? value : (options[0]?.value ?? "");
 }
@@ -193,8 +198,8 @@ export function ClipMomentFields({
           id="clip-formats"
           label="Formats"
           name="formats"
-          defaultValue={first(formatOptions, draft.formats)}
-          options={formatOptions}
+          defaultValue={first(withValue(formatOptions, draft.formats), draft.formats)}
+          options={withValue(formatOptions, draft.formats)}
         />
         <SelectField
           id="clip-quality"
