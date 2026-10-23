@@ -50,3 +50,7 @@ No prompt bodies enter UI package.
 Clips layouts use controlled props and React slots. Cloud dashboard injects authenticated media,
 timeline/player implementations, cost panels, publishing, router navigation, and live job streams.
 Self-host runtime can supply different adapters without forking layout code.
+
+## License
+
+[MIT](LICENSE).

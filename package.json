@@ -1,6 +1,7 @@
 {
   "name": "@videogpt/ui",
   "version": "0.0.1",
+  "license": "MIT",
   "description": "Customizable React components for VideoGPT generation products",
   "files": [
     "dist-lib"
