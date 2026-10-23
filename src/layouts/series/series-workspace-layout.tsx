@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 export interface SeriesWorkspaceLayoutProps {
   header?: ReactNode;
   headerActions?: ReactNode;
+  lead?: ReactNode;
   cast?: ReactNode;
   episodes?: ReactNode;
   aside?: ReactNode;
@@ -16,6 +17,7 @@ export interface SeriesWorkspaceLayoutProps {
 export function SeriesWorkspaceLayout({
   header,
   headerActions,
+  lead,
   cast,
   episodes,
   aside,
@@ -38,6 +40,8 @@ export function SeriesWorkspaceLayout({
         </Card>
       ) : null}
 
+      {lead}
+
       <div className={cn("grid min-w-0 gap-4", aside && "lg:grid-cols-3")}>
         <div className={cn("flex min-w-0 flex-col gap-4", aside && "lg:col-span-2")}>
           {cast ? (
@@ -52,6 +56,7 @@ export function SeriesWorkspaceLayout({
           ) : null}
           {footer}
         </div>
+
         {aside ? <div className="flex min-w-0 flex-col gap-4">{aside}</div> : null}
       </div>
     </div>

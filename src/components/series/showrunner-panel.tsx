@@ -113,7 +113,7 @@ export function SeriesShowrunnerPanel({
               </span>
             </div>
 
-            <ul className="flex flex-col gap-2">
+            <ul className="grid gap-2 sm:grid-cols-2">
               {ideas.map((idea, index) => {
                 const id = `showrunner-idea-${index}`;
                 return (
