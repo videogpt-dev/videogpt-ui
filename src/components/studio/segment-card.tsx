@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, Clock3, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, Clock3, LockKeyhole } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,6 @@ import { Icons } from "./icons";
 import type { IconRegistry, SegmentDefinition } from "./types";
 
 const statusMeta = {
-  available: { label: "Available", icon: Check },
   planned: { label: "Planned", icon: Clock3 },
   disabled: { label: "Unavailable", icon: LockKeyhole },
 } as const;
@@ -40,9 +39,8 @@ export function SegmentCard({
   onSelect,
   className,
 }: SegmentCardProps) {
-  const status = statusMeta[segment.status];
-  const StatusIcon = status.icon;
-  const enabled = segment.status === "available";
+  const status = segment.status === "available" ? null : statusMeta[segment.status];
+  const enabled = status === null;
 
   return (
     <Card
@@ -50,7 +48,7 @@ export function SegmentCard({
       data-status={segment.status}
       data-selected={selected || undefined}
       className={cn(
-        "relative min-h-96 border border-transparent bg-card/90 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg data-[selected=true]:border-vui-brand/40 data-[selected=true]:ring-3 data-[selected=true]:ring-vui-brand/10",
+        "relative border border-transparent bg-card/90 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg data-[selected=true]:border-vui-brand/40 data-[selected=true]:ring-3 data-[selected=true]:ring-vui-brand/10",
         className,
       )}
     >
@@ -59,10 +57,12 @@ export function SegmentCard({
           <div className="flex size-8 items-center justify-center rounded-lg bg-vui-brand/10 text-vui-brand ring-1 ring-vui-brand/15">
             {Icons.render(segment.icon, { className: "size-4" }, icons)}
           </div>
-          <Badge variant="outline" className="gap-1 border-foreground/10 bg-background/80">
-            <StatusIcon data-icon="inline-start" />
-            {status.label}
-          </Badge>
+          {status ? (
+            <Badge variant="outline" className="gap-1 border-foreground/10 bg-background/80">
+              <status.icon data-icon="inline-start" />
+              {status.label}
+            </Badge>
+          ) : null}
         </div>
         <div className="grid gap-1.5">
           <CardTitle className="text-md">{segment.label}</CardTitle>
@@ -73,7 +73,6 @@ export function SegmentCard({
       </CardHeader>
 
       <CardContent className="flex-1">
-        <div className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">Features</div>
         <ul className="grid gap-2.5">
           {segment.features.slice(0, featureLimit).map((feature) => (
             <li key={feature.code_name} className="flex items-center gap-2 text-xs">
@@ -86,8 +85,7 @@ export function SegmentCard({
         </ul>
       </CardContent>
 
-      <CardFooter className="justify-between gap-3">
-        <span className="font-mono text-xs text-muted-foreground">{segment.code_name}</span>
+      <CardFooter className="justify-end gap-3">
         <Button
           size="sm"
           variant={selected ? "default" : "outline"}
