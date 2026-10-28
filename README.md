@@ -22,6 +22,8 @@ Current custom components:
 - Studio shell, segment workspace, and media canvas
 - Option selects and shared media options (aspects, engines, languages)
 - Status messages and expandable action toasts
+- Flow canvas: a node editor (React Flow) for flows an engine describes, with its node list,
+  settings panel, searchable model picker, run outputs, scene blocks and series episodes
 
 Designed as a public base layer. Products can compose these components and add private extensions
 without coupling private logic to this package.
@@ -55,6 +57,39 @@ No prompt bodies enter UI package.
 Clips layouts use controlled props and React slots. Cloud dashboard injects authenticated media,
 timeline/player implementations, cost panels, publishing, router navigation, and live job streams.
 Self-host runtime can supply different adapters without forking layout code.
+
+## Flow canvas
+
+`FlowEditor` draws a flow from an engine's node list (Kinoforge's `GET /v1/flows/nodes` shape)
+and leaves every request to the host:
+
+```tsx
+<FlowEditor
+  title={flow.title}
+  graph={flow.graph}
+  specs={nodes}
+  models={models}
+  styles={styles}
+  accounts={accounts}
+  uploads={uploads}
+  run={liveRun}
+  saving={saving}
+  running={starting}
+  saveAnswer={lastSave}
+  runAnswer={lastStart}
+  onSave={(draft) => save(draft)}
+  onRun={(draft, part) => start(draft, part)}
+  onCancel={(runId) => cancel(runId)}
+  upload={(kind, file) => uploadFile(kind, file)}
+/>
+```
+
+Its link and setting checks help people while they edit; the host's server must check every
+flow again on save and run.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Security reports: [SECURITY.md](SECURITY.md).
 
 ## License
 
