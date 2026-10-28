@@ -90,14 +90,15 @@ export function FlowNodeCard({ data, selected }: NodeProps<FlowCanvasNode>) {
   );
 }
 
-/** A scene: a box its nodes sit in. Its clip comes from inside, the film so far goes on. */
+/** A scene: a box its nodes sit in. The scenes before come in on the left, its clip from
+ *  inside on the right, and the film so far leaves low on the right to the next scene. */
 export function FlowBlockCard({ data, selected }: NodeProps<FlowCanvasNode>) {
   const { spec, run, issues, number } = data;
   const state = run?.state ?? FlowNodeState.Waiting;
-  const ports = [
-    ...spec.inputs.map((p) => ({ p, input: true })),
-    ...spec.outputs.map((p) => ({ p, input: false })),
-  ];
+  const sideInputs = spec.inputs.filter((p) => p.name !== spec.chain);
+  const chain = spec.inputs.find((p) => p.name === spec.chain);
+  const handle = (color: string) =>
+    cn("size-3! border-2! border-card! pointer-coarse:size-4!", color);
   return (
     <div
       className={cn(
@@ -115,34 +116,54 @@ export function FlowBlockCard({ data, selected }: NodeProps<FlowCanvasNode>) {
           <FlowBadge tone={FlowTone.Danger}>{issues.length}</FlowBadge>
         ) : null}
       </div>
-      {ports.map(({ p, input }, i) => {
-        const chain = p.name === spec.chain;
-        const side = chain ? Position.Left : Position.Right;
-        const top = chain ? 24 : 24 + i * 28;
-        return (
-          <div key={p.name}>
-            <Handle
-              id={p.name}
-              type={input ? "target" : "source"}
-              position={side}
-              style={{ top }}
-              className={cn(
-                "!size-3 !border-2 !border-card pointer-coarse:!size-4",
-                FlowLook.PORT_COLOR[p.type],
-              )}
-            />
-            <span
-              className={cn(
-                "absolute text-[11px] text-muted-foreground",
-                side === Position.Left ? "left-3" : "right-3",
-              )}
-              style={{ top: top + 8 }}
-            >
-              {p.label}
-            </span>
-          </div>
-        );
-      })}
+      {chain ? (
+        <>
+          <Handle
+            id={chain.name}
+            type="target"
+            position={Position.Left}
+            style={{ top: 24 }}
+            className={handle(FlowLook.PORT_COLOR[chain.type])}
+          />
+          <span className="absolute left-3 text-[11px] text-muted-foreground" style={{ top: 32 }}>
+            {chain.label}
+          </span>
+        </>
+      ) : null}
+      {sideInputs.map((p, i) => (
+        <div key={p.name}>
+          <Handle
+            id={p.name}
+            type="target"
+            position={Position.Right}
+            style={{ top: 24 + i * 28 }}
+            className={handle(FlowLook.PORT_COLOR[p.type])}
+          />
+          <span
+            className="absolute right-3 text-[11px] text-muted-foreground"
+            style={{ top: 32 + i * 28 }}
+          >
+            {p.label}
+          </span>
+        </div>
+      ))}
+      {spec.outputs.map((p, i) => (
+        <div key={p.name}>
+          <Handle
+            id={p.name}
+            type="source"
+            position={Position.Right}
+            style={{ top: "auto", bottom: 24 + i * 28 }}
+            className={handle(FlowLook.PORT_COLOR[p.type])}
+          />
+          <span
+            className="absolute right-3 text-[11px] text-muted-foreground"
+            style={{ bottom: 32 + i * 28 }}
+          >
+            {p.label}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
