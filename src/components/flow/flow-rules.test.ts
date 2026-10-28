@@ -34,6 +34,7 @@ const spec = (type: string, extra: Partial<FlowNodeSpec> = {}): FlowNodeSpec => 
   needs: [],
   host: false,
   one_of: [],
+  apart: [],
   most: 10,
   block: false,
   chain: "",
@@ -82,6 +83,35 @@ describe("FlowLinks.refusal", () => {
     const link = { source: "c", source_port: "image", target: "b", target_port: "prompt" };
     expect(FlowLinks.refusal(SPECS, mixed, link)).toBe(
       "image (image) cannot go into prompt (text).",
+    );
+  });
+});
+
+describe("a clip's speech", () => {
+  const video = spec("generate.video", {
+    inputs: [port("dialogue", FlowPortType.Text), port("audio", FlowPortType.Audio)],
+    apart: ["dialogue", "audio"],
+  });
+  const specs: FlowSpecs = {
+    ...SPECS,
+    "input.audio": spec("input.audio", { outputs: [port("audio", FlowPortType.Audio)] }),
+    "generate.video": video,
+  };
+  const speech: FlowGraph = {
+    nodes: [
+      { id: "a", type: "input.text", config: {}, position: { x: 0, y: 0 } },
+      { id: "s", type: "input.audio", config: {}, position: { x: 0, y: 0 } },
+      { id: "v", type: "generate.video", config: {}, position: { x: 0, y: 0 } },
+    ],
+    edges: [{ source: "a", source_port: "text", target: "v", target_port: "dialogue" }],
+  };
+
+  it("takes a spoken line or an audio, not both", () => {
+    const audio = { source: "s", source_port: "audio", target: "v", target_port: "audio" };
+    expect(FlowLinks.refusal(specs, speech, audio)).toBe("Use dialogue or audio, not both.");
+    const both = { ...speech, edges: [...speech.edges, audio] };
+    expect(FlowRules.issues(specs, both).map((i) => i.message)).toContain(
+      "generate.video: use dialogue or audio, not both.",
     );
   });
 });

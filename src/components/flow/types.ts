@@ -109,6 +109,7 @@ export interface FlowNodeSpec {
   needs: string[];
   host: boolean;
   one_of: string[];
+  apart: string[];
   most: number;
   block: boolean;
   chain: string;

@@ -55,6 +55,7 @@ export class FlowShape {
       needs: [],
       host: false,
       one_of: [],
+      apart: [],
       most: 1,
       block: false,
       chain: "",

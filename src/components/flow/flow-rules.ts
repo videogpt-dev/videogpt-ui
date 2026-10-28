@@ -92,6 +92,15 @@ export class FlowLinks {
     if (link.source === link.target) return "A node cannot feed itself.";
     if (out.type !== into.type)
       return `${out.label} (${out.type}) cannot go into ${into.label} (${into.type}).`;
+    const rival = target.apart.includes(into.name)
+      ? target.inputs.find(
+          (p) =>
+            p.name !== into.name &&
+            target.apart.includes(p.name) &&
+            graph.edges.some((e) => e.target === link.target && e.target_port === p.name),
+        )
+      : undefined;
+    if (rival) return `Use ${rival.label} or ${into.label}, not both.`;
     if (FlowLinks.crosses(specs, graph, link)) return "Links stay inside their scene.";
     const taken = graph.edges.filter(
       (e) => e.target === link.target && e.target_port === link.target_port,
@@ -173,6 +182,10 @@ export class FlowRules {
       if (spec.one_of.length && !spec.one_of.some(linked)) {
         const labels = spec.inputs.filter((p) => spec.one_of.includes(p.name)).map((p) => p.label);
         add(node.id, `${spec.label} needs ${labels.join(" or ")}.`);
+      }
+      const both = spec.inputs.filter((p) => spec.apart.includes(p.name) && linked(p.name));
+      if (both.length > 1) {
+        add(node.id, `${spec.label}: use ${both.map((p) => p.label).join(" or ")}, not both.`);
       }
     }
     return issues;
