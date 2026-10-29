@@ -1,6 +1,7 @@
 import type { SelectOption } from "@/components/forms/types";
 
-export type RenderEngine = "storyboard" | "video";
+/** A render engine's key; the app passes the ones it offers as `engineOptions`. */
+export type RenderEngine = string;
 
 export class MediaOptions {
   static readonly aspects: readonly SelectOption[] = [
