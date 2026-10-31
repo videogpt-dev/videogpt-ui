@@ -18,7 +18,7 @@ this project, it's not welcome.
 
 ## Reporting
 
-If someone crosses the line, email **conduct@videogpt.dev**. Reports are handled privately.
+If someone crosses the line, email **conduct@kinoforge.dev**. Reports are handled privately.
 Maintainers may edit or remove content and, for repeated or serious behavior, block people
 from the project.
 

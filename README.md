@@ -1,14 +1,14 @@
-# VideoGPT UI
+# Kinoforge UI
 
-[![Website](https://img.shields.io/badge/website-videogpt.dev-7c3aed)](https://videogpt.dev)
+[![Website](https://img.shields.io/badge/website-kinoforge.dev-7c3aed)](https://kinoforge.dev)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/videogpt-dev/videogpt-ui)](https://github.com/videogpt-dev/videogpt-ui/commits/main)
 ![React](https://img.shields.io/badge/react-19-61DAFB?logo=react&logoColor=black)
 
-Customizable React design system for VideoGPT products.
+Customizable React design system for Kinoforge products.
 
 Built with React 19, shadcn/ui, Radix UI, Lucide, Tailwind CSS 4.3, and Vite+.
-Includes shadcn primitives, workflow forms, feedback, and VideoGPT-specific generation surfaces.
+Includes shadcn primitives, workflow forms, feedback, and Kinoforge-specific generation surfaces.
 Studio components accept Kinoforge `GET /v1/segments` response shapes directly.
 
 Current custom components:

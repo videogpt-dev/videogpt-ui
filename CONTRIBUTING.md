@@ -1,7 +1,7 @@
 # Contributing
 
 Thanks for taking the time. This repo is `@videogpt/ui`, the open React design system behind
-[videogpt.dev](https://videogpt.dev) and its self-host edition. Bug reports, fixes, new
+[kinoforge.dev](https://kinoforge.dev) and its self-host edition. Bug reports, fixes, new
 components and improvements to the flow canvas are all welcome.
 
 ## Before you start
